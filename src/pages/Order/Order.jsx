@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
 import styles from './Order.module.css';
 
 function genOrderId() {
@@ -8,7 +7,6 @@ function genOrderId() {
 }
 
 export default function Order() {
-  const { items, total, clearCart } = useCart();
   const navigate = useNavigate();
   const [form, setForm] = useState({ fullName: '', phone: '', email: '', address: '' });
   const [errors, setErrors] = useState({});

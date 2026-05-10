@@ -1,14 +1,11 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState } from 'react';
-import { products } from '../data/products';
-import { useCart } from '../context/CartContext';
-import LampSvg from '../components/LampSvg';
+import LampSvg from '../../components/LampSvg';
 import styles from './ProductDetail.module.css';
 
 export default function ProductDetail() {
   const { id } = useParams();
   const product = products.find(p => p.id === Number(id));
-  const { addToCart } = useCart();
   const [added, setAdded] = useState(false);
 
   if (!product) return (

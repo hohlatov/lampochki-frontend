@@ -1,9 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
 import styles from './Cart.module.css';
 
 export default function Cart() {
-  const { items, removeFromCart, updateQty, total } = useCart();
   const navigate = useNavigate();
 
   if (items.length === 0) return (

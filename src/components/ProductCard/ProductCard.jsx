@@ -1,10 +1,15 @@
 import { Link } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
-import LampSvg from './LampSvg';
+import { useDispatch } from 'react-redux'
+import { addToCart } from '../../features/cart/cartSlice'
+import LampSvg from '../LampSvg';
 import styles from './ProductCard.module.css';
 
 export default function ProductCard({ product }) {
-  const { addToCart } = useCart();
+  const dispatch = useDispatch()
+
+  const handleAdd = () => {
+    dispatch(addToCart(product))
+  }
 
   return (
     <div className={styles.card}>
@@ -18,6 +23,9 @@ export default function ProductCard({ product }) {
         <div className={styles.footer}>
           <span className={styles.price}>{product.price.toFixed(2)} руб.</span>
           <button className={styles.btn} onClick={() => addToCart(product)}>В корзину</button>
+          <button onClick={handleAdd}>
+            Добавить в корзину
+          </button>
         </div>
       </div>
     </div>

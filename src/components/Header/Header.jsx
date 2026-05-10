@@ -1,10 +1,15 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
+import { useSelector } from 'react-redux';
 import styles from './Header.module.css';
 
 export default function Header() {
-  const { count } = useCart();
   const nav = useNavigate();
+  const cartItems = useSelector(state => state.cart.items)
+
+  const totalCount = cartItems.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  )
 
   return (
     <header className={styles.wrap}>
@@ -22,7 +27,7 @@ export default function Header() {
           <Link to="/#reviews">Отзывы</Link>
           <Link to="/#contacts">Контакты</Link>
           <Link to="/cart" className={styles.cartLink}>
-            Корзина {count > 0 && <span className={styles.badge}>{count}</span>}
+            Корзина {totalCount > 0 && <span className={styles.badge}>{count}</span>}
           </Link>
         </nav>
       </div>

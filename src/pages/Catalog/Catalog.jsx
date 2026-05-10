@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { products } from '../data/products';
-import ProductCard from '../components/ProductCard';
+import ProductCard from '../../components/ProductCard/ProductCard';
 import styles from './Catalog.module.css';
 
 const BASES   = ['Все', 'E27', 'E14', 'GU10'];
