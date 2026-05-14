@@ -1,16 +1,33 @@
-import { Link, useNavigate } from 'react-router-dom';
-import styles from './Cart.module.css';
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import {
+  removeFromCart,
+  updateQuantity,
+  selectCartTotal,
+} from '../../features/cart/cartSlice'
+import styles from './Cart.module.css'
 
 export default function Cart() {
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const items = useSelector((state) => state.cart.items)
+  const total = useSelector(selectCartTotal)
 
-  if (items.length === 0) return (
-    <div className={styles.empty}>
-      <span className={styles.emptyIcon}>🛒</span>
-      <p>Корзина пуста</p>
-      <Link to="/catalog" className={styles.goBtn}>Перейти в каталог</Link>
-    </div>
-  );
+  const updateQty = (id, quantity) => {
+    if (quantity >= 1) {
+      dispatch(updateQuantity({ id, quantity }))
+    }
+  }
+
+  if (items.length === 0) {
+    return (
+      <div className={styles.empty}>
+        <span className={styles.emptyIcon}>🛒</span>
+        <p>Корзина пуста</p>
+        <Link to="/catalog" className={styles.goBtn}>Перейти в каталог</Link>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.page}>
@@ -21,7 +38,7 @@ export default function Cart() {
         </div>
 
         <div className={styles.itemsList}>
-          {items.map(item => (
+          {items.map((item) => (
             <div key={item.id} className={styles.row}>
               <div className={styles.rowName}>
                 <Link to={`/product/${item.id}`} className={styles.itemLink}>{item.name}</Link>
@@ -29,20 +46,32 @@ export default function Cart() {
               </div>
               <div className={styles.rowQty}>
                 <span className={styles.rowLabel}>Количество:</span>
-                <button className={styles.qtyBtn} onClick={() => updateQty(item.id, item.qty - 1)}>−</button>
+                <button
+                  className={styles.qtyBtn}
+                  onClick={() => updateQty(item.id, item.quantity - 1)}
+                >−</button>
                 <input
-                  type="number" min={1} value={item.qty}
-                  onChange={e => updateQty(item.id, Number(e.target.value))}
+                  type="number"
+                  min={1}
+                  value={item.quantity}
+                  onChange={(e) => updateQty(item.id, Number(e.target.value))}
                   className={styles.qtyInput}
                 />
-                <button className={styles.qtyBtn} onClick={() => updateQty(item.id, item.qty + 1)}>+</button>
+                <button
+                  className={styles.qtyBtn}
+                  onClick={() => updateQty(item.id, item.quantity + 1)}
+                >+</button>
                 <span className={styles.rowLabel}>шт.</span>
               </div>
               <div className={styles.rowPrice}>
                 <span className={styles.rowLabel}>Цена:</span>
-                <span className={styles.price}>{(item.price * item.qty).toFixed(2)} руб.</span>
+                <span className={styles.price}>{(item.price * item.quantity).toFixed(2)} руб.</span>
               </div>
-              <button className={styles.removeBtn} onClick={() => removeFromCart(item.id)} title="Удалить">✕</button>
+              <button
+                className={styles.removeBtn}
+                onClick={() => dispatch(removeFromCart(item.id))}
+                title="Удалить"
+              >✕</button>
             </div>
           ))}
         </div>
@@ -58,5 +87,5 @@ export default function Cart() {
         </div>
       </div>
     </div>
-  );
+  )
 }

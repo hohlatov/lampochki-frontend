@@ -45,6 +45,13 @@ const cartSlice = createSlice({
         item.quantity -= 1
       }
     },
+    updateQuantity: (state, action) => {
+      const { id, quantity } = action.payload
+      const item = state.items.find(i => i.id === id)
+      if (item && quantity >= 1) {
+        item.quantity = quantity
+      }
+    },
   },
 })
 
@@ -54,6 +61,13 @@ export const {
   clearCart,
   increaseQuantity,
   decreaseQuantity,
+  updateQuantity,
 } = cartSlice.actions
+
+export const selectCartTotalCount = (state) =>
+  state.cart.items.reduce((sum, item) => sum + item.quantity, 0)
+
+export const selectCartTotal = (state) =>
+  state.cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
 export default cartSlice.reducer

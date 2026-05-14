@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addToCart } from '../../features/cart/cartSlice'
-import LampSvg from '../LampSvg';
-import styles from './ProductCard.module.css';
+import LampSvg from '../LampSvg'
+import styles from './ProductCard.module.css'
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch()
@@ -22,12 +22,9 @@ export default function ProductCard({ product }) {
         <span className={styles.brand}>«{product.brand}»</span>
         <div className={styles.footer}>
           <span className={styles.price}>{product.price.toFixed(2)} руб.</span>
-          <button className={styles.btn} onClick={() => addToCart(product)}>В корзину</button>
-          <button onClick={handleAdd}>
-            Добавить в корзину
-          </button>
+          <button className={styles.btn} onClick={handleAdd}>В корзину</button>
         </div>
       </div>
     </div>
-  );
+  )
 }

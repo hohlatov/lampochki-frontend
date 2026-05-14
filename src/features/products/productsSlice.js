@@ -8,17 +8,21 @@ export const loadProducts = createAsyncThunk(
   }
 )
 
+const initialState = {
+  items: [],
+  loading: false,
+  error: null,
+}
+
 const productsSlice = createSlice({
   name: 'products',
-  initialState: {
-    items: [],
-    loading: false,
-    error: null,
-  },
-  extraReducers: builder => {
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
     builder
-      .addCase(loadProducts.pending, state => {
+      .addCase(loadProducts.pending, (state) => {
         state.loading = true
+        state.error = null
       })
       .addCase(loadProducts.fulfilled, (state, action) => {
         state.loading = false
