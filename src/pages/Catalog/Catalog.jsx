@@ -27,7 +27,7 @@ export default function Catalog() {
     dispatch(loadProducts())
   }, [dispatch])
 
-  const filtered = products.filter((p) => {
+  const filtered = (products || []).filter((p) => {
     if (base !== 'Все' && p.base !== base) return false
     if (brand !== 'Все' && p.brand !== brand) return false
     if (p.price > maxPrice) return false

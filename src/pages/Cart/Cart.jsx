@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   removeFromCart,
-  updateQuantity,
-  selectCartTotal,
+  increaseQuantity,
+  decreaseQuantity,
 } from '../../features/cart/cartSlice'
 import styles from './Cart.module.css'
 
@@ -11,13 +11,28 @@ export default function Cart() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const items = useSelector((state) => state.cart.items)
-  const total = useSelector(selectCartTotal)
+  const total = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  )
 
-  const updateQty = (id, quantity) => {
-    if (quantity >= 1) {
-      dispatch(updateQuantity({ id, quantity }))
-    }
+const updateQty = (id, newQty) => {
+  const item = items.find(i => i.id === id);
+
+  if (!item) return;
+
+  if (newQty > item.quantity) {
+    dispatch(increaseQuantity(id));
   }
+
+  if (newQty < item.quantity) {
+    dispatch(decreaseQuantity(id));
+  }
+};
+
+const handleRemove = id => {
+  dispatch(removeFromCart(id));
+};
 
   if (items.length === 0) {
     return (
@@ -69,7 +84,7 @@ export default function Cart() {
               </div>
               <button
                 className={styles.removeBtn}
-                onClick={() => dispatch(removeFromCart(item.id))}
+                onClick={() => handleRemove(item.id)}
                 title="Удалить"
               >✕</button>
             </div>
